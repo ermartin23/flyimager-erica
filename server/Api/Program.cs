@@ -1,7 +1,11 @@
+using Api;
 using DataAccess;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Scalar.AspNetCore;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,10 +25,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<AppDbContext>();
-builder
-    .Services.AddOptionsWithValidateOnStart<S3Options>()
+
+builder.Services
+    .AddOptionsWithValidateOnStart<S3Options>()
     .Bind(builder.Configuration.GetSection(nameof(S3Options)))
     .ValidateDataAnnotations();
+// Review after modification
+// builder.Services.AddSingleton<Api.Services.S3StorageService>();
 
 var app = builder.Build();
 

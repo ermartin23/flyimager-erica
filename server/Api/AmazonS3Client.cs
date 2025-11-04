@@ -3,7 +3,6 @@ using Microsoft.Extensions.Options;
 
 namespace flyimager.Services;
 
-
 public class S3Service
 {
     private readonly IAmazonS3 _s3Client;

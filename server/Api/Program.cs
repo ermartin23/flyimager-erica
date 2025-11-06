@@ -1,11 +1,11 @@
-using Api;
+using Api.Options;
+using Api.Services;
 using DataAccess;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Scalar.AspNetCore;
-
-
+using Scalar.AspNetCore; 
+using Microsoft.AspNetCore.Http; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +33,9 @@ builder.Services
 // Review after modification
 // builder.Services.AddSingleton<Api.Services.S3StorageService>();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IS3StorageService, S3StorageService>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -53,6 +56,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
